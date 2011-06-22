@@ -26,8 +26,7 @@ class Advertisement extends DataObject {
 	public function getCMSFields() {
 		$fields = new FieldSet();
 		$fields->push(new TabSet('Root', new Tab('Main', 
-			new TextField('Title', 'Title'),
-			new TextField('TargetURL', 'Target URL')
+			new TextField('Title', 'Title')
 		)));
 		
 		if ($this->ID) {
@@ -40,10 +39,12 @@ class Advertisement extends DataObject {
 			$fields->addFieldsToTab('Root.Main', array(
 				new ImageField('Image'),
 				new Treedropdownfield('InternalPageID', 'Internal Page Link', 'Page'),
+				new TextField('TargetURL', 'External Target URL'),
 				new HasOnePickerField($this, 'Campaign', 'Ad Campaign')
 			));
 		}
-
+		$this->extend('updateCMSFields', $fields);
+		
 		return $fields;
 	}
 	
