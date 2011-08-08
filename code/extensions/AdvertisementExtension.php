@@ -62,9 +62,9 @@ class AdvertisementExtension extends DataObjectDecorator {
 		}
 		
 		if ($this->owner->NumberOfAds) {
-			$ads = $toUse->getManyManyComponents('Advertisements', '', '', '', $this->owner->NumberOfAds);
+			$ads = $toUse->getManyManyComponents('Advertisements', NULL, 'RAND()', NULL, $this->owner->NumberOfAds);
 		} else {
-			$ads = $toUse->Advertisements();
+			$ads = $toUse->Advertisements(NULL, NULL, 'RAND()');
 		}
 		
 		return $ads;
