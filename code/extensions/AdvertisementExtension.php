@@ -45,28 +45,17 @@ class AdvertisementExtension extends DataObjectDecorator {
 	
 	public function AdList() {
 		$toUse = $this->owner;
-		if ($this->owner->InheritSettings) {
-			while($toUse->ParentID) {
-				if (!$toUse->InheritSettings) {
-					break;
-				}
+
+		if( $toUse->UseCampaignID ) {
+			$toUse = $toUse->UseCampaign();
+		}
+		else if( $toUse->InheritSettings ) {
+			while( $toUse->ParentID && $toUse->InheritSettings ) {
 				$toUse = $toUse->Parent();
 			}
 		}
-		
-		$ads = null;
-		
-		// If set to use a campaign, just switch to that as our context. 
-		if ($toUse->UseCampaignID) {
-			$toUse = $toUse->UseCampaign();
-		}
-		
-		if ($this->owner->NumberOfAds) {
-			$ads = $toUse->getManyManyComponents('Advertisements', NULL, 'RAND()', NULL, $this->owner->NumberOfAds);
-		} else {
-			$ads = $toUse->Advertisements(NULL, NULL, 'RAND()');
-		}
-		
-		return $ads;
+
+		$limit = ($this->owner->NumberOfAds ? $this->owner->NumberOfAds : '');
+		return $toUse->Advertisements('', 'RAND()', '', $limit);
 	}
 }
