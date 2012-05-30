@@ -19,7 +19,7 @@ class Advertisement extends DataObject {
 	public static $has_one = array(
 		'InternalPage'		=> 'Page',
 		'Campaign'			=> 'AdCampaign',
-		'Image'				=> 'Image',
+		'Image'				=> 'BetterImage',
 	);
 	
 	public static $summary_fields = array('Title');
