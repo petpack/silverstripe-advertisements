@@ -51,11 +51,28 @@ class AdvertisementExtension extends DataObjectDecorator {
 		}
 		else if( $toUse->InheritSettings ) {
 			while( $toUse->ParentID && $toUse->InheritSettings ) {
-				$toUse = $toUse->Parent();
+				$parent = $toUse->Parent();
+				if( $parent ) {
+					$toUse = $parent;
+				}
+				else {
+					// if the top-level page inherits its settings
+					$topLevel = $toUse;
+					$toUse = null;
+					if( $topLevel->InheritSettings ) {
+						// then go to the SiteConfig
+						if( ($siteConfig = SiteConfig::current_site_config())
+								&& $siteConfig->hasMethod('Advertisements') ) {
+							$toUse = $siteConfig;
+						}
+					}
+				}
 			}
 		}
-
-		$limit = ($this->owner->NumberOfAds ? $this->owner->NumberOfAds : '');
-		return $toUse->Advertisements('', 'RAND()', '', $limit);
+		if( $toUse ) {
+			$limit = ($this->owner->NumberOfAds ? $this->owner->NumberOfAds : '');
+			return $toUse->Advertisements('', 'RAND()', '', $limit);
+		}
 	}
+
 }
