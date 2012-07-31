@@ -43,7 +43,7 @@ class Advertisement extends DataObject {
 				new HasOnePickerField($this, 'Campaign', 'Ad Campaign')
 			));
 		}
-
+		$this->extend('updateCMSFields', $fields);
 		return $fields;
 	}
 	
