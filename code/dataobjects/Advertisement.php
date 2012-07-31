@@ -13,12 +13,13 @@ class Advertisement extends DataObject {
 	public static $db = array(
 		'Title'				=> 'Varchar',
 		'TargetURL'			=> 'Varchar(255)',
+		'LinkType' => 'Enum("Internal, External, File")',
 	);
 	
 	public static $has_one = array(
 		'InternalPage'		=> 'Page',
 		'Campaign'			=> 'AdCampaign',
-		'Image'				=> 'Image',
+		'Image'				=> 'BetterImage',
 	);
 	
 	public static $summary_fields = array('Title');
@@ -26,8 +27,7 @@ class Advertisement extends DataObject {
 	public function getCMSFields() {
 		$fields = new FieldSet();
 		$fields->push(new TabSet('Root', new Tab('Main', 
-			new TextField('Title', 'Title'),
-			new TextField('TargetURL', 'Target URL')
+			new TextField('Title', 'Title')
 		)));
 		
 		if ($this->ID) {
@@ -39,7 +39,11 @@ class Advertisement extends DataObject {
 			
 			$fields->addFieldsToTab('Root.Main', array(
 				new ImageField('Image'),
-				new Treedropdownfield('InternalPageID', 'Internal Page Link', 'Page'),
+				new LiteralField('Link', '<div class="field"><label>Link Target</label></div>'),
+				$group = new SelectionGroup('LinkType', array(
+						'Internal//Link to a page on this website' => new TreeDropdownField('InternalPageID', 'Link Target', 'SiteTree'),
+						'External//Link to an external website' => new TextField('TargetURL', 'Link Target URL'),
+				)),
 				new HasOnePickerField($this, 'Campaign', 'Ad Campaign')
 			));
 		}

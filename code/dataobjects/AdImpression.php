@@ -106,7 +106,7 @@ function get_browser_info()
     // finally get the correct version number
     $known = array('Version', $ub, 'other');
     $pattern = '#(?P<browser>' . join('|', $known) .
-    ')[/ ]+(?P<version>[0-9.|a-zA-Z.]*)#';
+    ')[/ ]+(?P<version>[0-9.|a-zA-Z.]*)#';    
     if (!preg_match_all($pattern, $u_agent, $matches)) {
         // we have no matching number just continue
     }
