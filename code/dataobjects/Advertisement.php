@@ -39,7 +39,7 @@ class Advertisement extends DataObject {
 			
 			$fields->addFieldsToTab('Root.Main', array(
 				new ImageField('Image'),
-				new LiteralField('Link', '<div class="field"><label>Link Target</label></div>'),
+				new LiteralField('LinkTypeLabel', '<div class="field"><label>Link Target</label></div>'),
 				$group = new SelectionGroup('LinkType', array(
 						'Internal//Link to a page on this website' => new TreeDropdownField('InternalPageID', 'Link Target', 'SiteTree'),
 						'External//Link to an external website' => new TextField('TargetURL', 'Link Target URL'),
