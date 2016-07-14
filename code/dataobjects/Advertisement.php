@@ -24,7 +24,7 @@ class Advertisement extends DataObject {
 	
 	public static $summary_fields = array('Title');
 	
-	public function getCMSFields() {
+	public function getCMSFields($params = null) {
 		$fields = new FieldSet();
 		$fields->push(new TabSet('Root', new Tab('Main', 
 			new TextField('Title', 'Title')
